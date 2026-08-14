@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechGeo — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-950:#0a2b21;
+    --green-900:#0f3d30;
+    --green-800:#154a3a;
+    --green-700:#1c5c48;
+    --accent:#34d399;
+    --accent-dim:#1f8f66;
+    --cream:#f7f8f3;
+    --paper:#ffffff;
+    --ink:#0c1f18;
+    --ink-soft:#5c6f66;
+    --line: rgba(12,31,24,0.09);
+    --radius: 18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:var(--cream);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  .shell{
+    width:100%;
+    max-width:1040px;
+    min-height:640px;
+    background:var(--paper);
+    border-radius: 28px;
+    box-shadow: 0 30px 80px -20px rgba(10,43,33,0.35);
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* ---------- LEFT PANEL ---------- */
+  .panel{
+    background:
+      radial-gradient(circle at 15% 15%, rgba(52,211,153,0.18), transparent 45%),
+      linear-gradient(160deg, var(--green-900) 0%, var(--green-950) 100%);
+    color:#eefaf4;
+    padding:48px 44px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+    overflow:hidden;
+  }
+  .geo-grid{
+    position:absolute;
+    inset:0;
+    opacity:0.35;
+    pointer-events:none;
+  }
+  .panel-top{position:relative; z-index:2;}
+
+  .logo-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .logo-mark{
+    width:38px;height:38px;flex:none;
+    position:relative;
+  }
+  .logo-word{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:0.01em;
+  }
+  .logo-word .geo{color:var(--accent);}
+
+  .panel-copy{
+    margin-top:64px;
+    position:relative;
+    z-index:2;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:16px;height:1px;
+    background:var(--accent);
+  }
+  .panel-copy h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:32px;
+    line-height:1.2;
+    font-weight:600;
+    margin:0 0 14px;
+    max-width:340px;
+  }
+  .panel-copy p{
+    font-size:14.5px;
+    line-height:1.65;
+    color:rgba(238,250,244,0.72);
+    max-width:320px;
+    margin:0;
+  }
+
+  .coord-strip{
+    position:relative;
+    z-index:2;
+    display:flex;
+    gap:22px;
+    padding-top:26px;
+    border-top:1px solid rgba(238,250,244,0.14);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:rgba(238,250,244,0.55);
+  }
+  .coord-strip span b{
+    display:block;
+    color:#eefaf4;
+    font-size:15px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    margin-bottom:2px;
+  }
+
+  /* ---------- RIGHT PANEL ---------- */
+  .form-side{
+    padding:48px 52px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+
+  .tabs{
+    display:flex;
+    background:var(--cream);
+    border-radius:999px;
+    padding:4px;
+    margin-bottom:34px;
+    width:fit-content;
+    gap:2px;
+  }
+  .tab{
+    border:none;
+    background:transparent;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    padding:9px 22px;
+    border-radius:999px;
+    cursor:pointer;
+    color:var(--ink-soft);
+    transition:all .25s ease;
+    letter-spacing:0.01em;
+  }
+  .tab.active{
+    background:var(--green-900);
+    color:#fff;
+    box-shadow:0 6px 16px -6px rgba(15,61,48,0.5);
+  }
+
+  .form-head h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:26px;
+    font-weight:600;
+    margin:0 0 6px;
+  }
+  .form-head p{
+    margin:0 0 30px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  .form-head p a{color:var(--accent-dim); font-weight:600; text-decoration:none;}
+  .form-head p a:hover{text-decoration:underline;}
+
+  form{display:flex; flex-direction:column; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field.row2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .field.row2 .field{grid-template-columns:none;}
+  label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:0.01em;
+  }
+  input{
+    border:1.5px solid var(--line);
+    background:var(--cream);
+    border-radius:11px;
+    padding:12px 14px;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    outline:none;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  input::placeholder{color:#9aa8a0;}
+  input:focus{
+    border-color:var(--accent-dim);
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(52,211,153,0.15);
+  }
+
+  .row-between{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12.5px;
+    margin-top:-2px;
+  }
+  .remember{display:flex; align-items:center; gap:7px; color:var(--ink-soft);}
+  .remember input{width:15px;height:15px;padding:0;accent-color:var(--green-900);}
+  .forgot{color:var(--accent-dim); text-decoration:none; font-weight:600;}
+  .forgot:hover{text-decoration:underline;}
+
+  .cta{
+    margin-top:6px;
+    border:none;
+    background:var(--green-900);
+    color:#fff;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    padding:14px;
+    border-radius:12px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:background .2s ease, transform .15s ease;
+  }
+  .cta:hover{background:var(--accent-dim); transform:translateY(-1px);}
+  .cta:active{transform:translateY(0);}
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:var(--ink-soft);
+    font-size:11.5px;
+    margin:22px 0 16px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .divider::before, .divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .socials{display:flex; gap:10px;}
+  .soc-btn{
+    flex:1;
+    border:1.5px solid var(--line);
+    background:#fff;
+    border-radius:11px;
+    padding:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .soc-btn:hover{border-color:var(--accent-dim); background:var(--cream);}
+
+  .terms{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin-top:4px;
+  }
+  .terms a{color:var(--accent-dim); text-decoration:none; font-weight:600;}
+
+  .pane{display:none;}
+  .pane.active{display:block; animation: fadeUp .35s ease;}
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(6px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  @media (max-width: 860px){
+    .shell{grid-template-columns:1fr; max-width:440px;}
+    .panel{display:none;}
+    .form-side{padding:40px 30px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .pane.active{animation:none;}
+    .cta:hover{transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- LEFT: brand panel -->
+  <div class="panel">
+    <svg class="geo-grid" viewBox="0 0 400 640" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M40 0H0V40" fill="none" stroke="#eefaf4" stroke-width="0.5" opacity="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="400" height="640" fill="url(#grid)"/>
+      <circle cx="200" cy="330" r="150" fill="none" stroke="#34d399" stroke-width="0.6" opacity="0.5"/>
+      <ellipse cx="200" cy="330" rx="150" ry="55" fill="none" stroke="#34d399" stroke-width="0.6" opacity="0.4"/>
+      <ellipse cx="200" cy="330" rx="150" ry="110" fill="none" stroke="#34d399" stroke-width="0.6" opacity="0.3"/>
+      <line x1="50" y1="330" x2="350" y2="330" stroke="#34d399" stroke-width="0.6" opacity="0.35"/>
+      <line x1="200" y1="180" x2="200" y2="480" stroke="#34d399" stroke-width="0.6" opacity="0.35"/>
+      <circle cx="118" cy="260" r="3" fill="#34d399"/>
+      <circle cx="266" cy="392" r="3" fill="#34d399"/>
+      <circle cx="245" cy="240" r="2" fill="#eefaf4" opacity="0.7"/>
+    </svg>
+
+    <div class="panel-top">
+      <div class="logo-row">
+        <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="18" stroke="#34d399" stroke-width="1.6"/>
+          <ellipse cx="20" cy="20" rx="18" ry="7" stroke="#34d399" stroke-width="1.2" opacity="0.75"/>
+          <line x1="2" y1="20" x2="38" y2="20" stroke="#34d399" stroke-width="1.2" opacity="0.75"/>
+          <path d="M20 2C20 2 27 10 27 20C27 30 20 38 20 38" stroke="#eefaf4" stroke-width="1.2" opacity="0.85"/>
+          <path d="M20 2C20 2 13 10 13 20C13 30 20 38 20 38" stroke="#eefaf4" stroke-width="1.2" opacity="0.85"/>
+          <circle cx="20" cy="20" r="3" fill="#34d399"/>
+        </svg>
+        <div class="logo-word">tech<span class="geo">geo</span></div>
+      </div>
+    </div>
+
+    <div class="panel-copy">
+      <div class="eyebrow">Field &amp; Cloud Platform</div>
+      <h1>Where geospatial data meets the tools to act on it.</h1>
+      <p>Sign in to sync live map layers, run terrain models, and ship geo-aware features without leaving your stack.</p>
+    </div>
+
+    <div class="coord-strip">
+      <span><b>128K+</b>datasets synced</span>
+      <span><b>99.98%</b>uptime</span>
+      <span><b>40ms</b>tile latency</span>
+    </div>
+  </div>
+
+  <!-- RIGHT: form panel -->
+  <div class="form-side">
+
+    <div class="tabs">
+      <button class="tab active" id="tabLogin" onclick="showPane('login')">Sign in</button>
+      <button class="tab" id="tabRegister" onclick="showPane('register')">Create account</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="pane active" id="pane-login">
+      <div class="form-head">
+        <h2>Welcome back</h2>
+        <p>New to TechGeo? <a href="#" onclick="showPane('register');return false;">Create an account</a></p>
+      </div>
+      <form onsubmit="return false;">
+        <div class="field">
+          <label for="li-email">Email</label>
+          <input id="li-email" type="email" placeholder="you@company.com" required>
+        </div>
+        <div class="field">
+          <label for="li-pass">Password</label>
+          <input id="li-pass" type="password" placeholder="Enter your password" required>
+        </div>
+        <div class="row-between">
+          <label class="remember"><input type="checkbox"> Keep me signed in</label>
+          <a href="#" class="forgot">Forgot password?</a>
+        </div>
+        <button class="cta" type="submit">Sign in →</button>
+      </form>
+
+      <div class="divider">or continue with</div>
+      <div class="socials">
+        <button class="soc-btn" aria-label="Continue with Google">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.91c1.7-1.57 2.69-3.88 2.69-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.85.86-3.05.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.71a5.4 5.4 0 0 1 0-3.42V4.96H.96a9 9 0 0 0 0 8.08l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.42 0 9 0A9 9 0 0 0 .96 4.96l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+        </button>
+        <button class="soc-btn" aria-label="Continue with GitHub">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="#0c1f18"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="pane" id="pane-register">
+      <div class="form-head">
+        <h2>Create your account</h2>
+        <p>Already on TechGeo? <a href="#" onclick="showPane('login');return false;">Sign in</a></p>
+      </div>
+      <form onsubmit="return false;">
+        <div class="field row2">
+          <div class="field">
+            <label for="re-first">First name</label>
+            <input id="re-first" type="text" placeholder="Amara" required>
+          </div>
+          <div class="field">
+            <label for="re-last">Last name</label>
+            <input id="re-last" type="text" placeholder="Njoroge" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="re-email">Work email</label>
+          <input id="re-email" type="email" placeholder="you@company.com" required>
+        </div>
+        <div class="field">
+          <label for="re-pass">Password</label>
+          <input id="re-pass" type="password" placeholder="At least 8 characters" required>
+        </div>
+        <button class="cta" type="submit">Create account →</button>
+        <p class="terms">By creating an account you agree to TechGeo's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showPane(name){
+    document.getElementById('pane-login').classList.toggle('active', name === 'login');
+    document.getElementById('pane-register').classList.toggle('active', name === 'register');
+    document.getElementById('tabLogin').classList.toggle('active', name === 'login');
+    document.getElementById('tabRegister').classList.toggle('active', name === 'register');
+  }
+</script>
+
+</body>
+</html>
